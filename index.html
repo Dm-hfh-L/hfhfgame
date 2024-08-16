@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>尋找心靈寶藏之旅</title>
+    <style>
+        body {
+            font-family: '微軟正黑體', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f0f0f0;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #4a4a4a;
+            text-align: center;
+            font-size: 24px;
+        }
+        .story-container, .question-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .question-container {
+            background-color: #e6f3ff;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        #progress {
+            width: 0%;
+            height: 30px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        @media (min-width: 768px) {
+            body {
+                max-width: 768px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 32px;
+            }
+            button {
+                display: inline-block;
+                width: auto;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>尋找心靈寶藏之旅</h1>
+    <div id="progress-bar">
+        <div id="progress">0%</div>
+    </div>
+    <div id="game-container">
+        <!-- 遊戲內容將通過 JavaScript 動態加載 -->
+    </div>
+    
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const progressBar = document.getElementById('progress');
+        
+        const storyData = [
+            {
+                text: "小寬大是一位充滿好奇心的年輕人。一天，他在整理外公的遺物時，發現了一張神秘的地圖和一疊寫上外公和自己名字的紙，上面標示著「心靈寶藏」的位置，指向一個叫做法鼓山的地方。",
+                question: {
+                    type: "choice",
+                    text: "你認為「心靈寶藏」可能有什麼？",
+                    options: ["金銀財寶", "古老的武功秘笈", "智慧與慈悲", "神奇的法術"],
+                    answer: 2
+                }
+            },
+            {
+                text: "小寬大決定前往法鼓山一探究竟。到達後，他遇到了一位和藹可親的法師。法師告訴他，法鼓山的核心理念。",
+                question: {
+                    type: "choice",
+                    text: "法鼓山創辦人聖嚴法師在1992年所提出的核心理念是？",
+                    options: ["賺錢致富", "心靈環保", "運動健身", "旅遊觀光"],
+                    answer: 1
+                }
+            },
+            {
+                text: "法師告訴小寬大，做為法鼓山的勸募會員，不是以募款為主要目標，而是要以推廣、推動、推行法鼓山的理念為目的，能夠將佛法在人間推行，使得人人都能用佛法幫助自己、家庭以及社會上相關之人。",
+                question: {
+                    type: "input",
+                    text: "法鼓山的理念是：提升人的品質，建設＿＿＿＿。",
+                    answer: "人間淨土"
+                }
+            },
+            {
+                text: "在法鼓山，小寬大認識了以心靈環保為主軸的「四種環保」及. 「心五四運動」。",
+                question: {
+                    type: "input",
+                    text: "「四種環保」：心靈環保、禮儀環保、生活環保和＿＿＿＿。",
+                    answer: "自然環保"
+                }
+            },
+            {
+                text: "小寬大參與了法鼓山的義工活動，幫助整理環境。",
+                question: {
+                    type: "choice",
+                    text: "你覺得小寬大在參與義工活動時可以收穫「團隊合作的力量」與??",
+                    options: ["賺錢", "獲得名聲", "服務他人的喜悅", "獲得特權"],
+                    answer: 2
+                }
+            },
+            {
+                text: "法師告訴小寬大「心五四」是以精神啟蒙運動的生活教育來實踐大學院、大關懷、大普化三大教育目標。",
+                question: {
+                    type: "input",
+                    text: "「心五四」運動：四安、四要、＿＿、四感、四福。",
+                    answer: "四它"
+                }
+            },
+            {
+                text: "小寬大要線上報名初級禪訓班時發現自己忘記「四眾編號」。",
+                question: {
+                    type: "choice",
+                    text: "如果忘記四眾編號\"不\"可以到哪查詢?",
+                    options: ["104查號台", "護法總會各地分會知客", "法鼓山各地寺院知客", "法鼓山全球資訊網"],
+                    answer: 0
+                }
+            },
+            {
+                text: "小寬大參加了法鼓山的初級禪訓班，學習了基礎的禪修方法。法師教導他專注於呼吸，觀察自己的思緒。",
+                question: {
+                    type: "choice",
+                    text: "以下哪一項\"不\"是禪修的主要目的？",
+                    options: ["培養專注力", "減輕壓力", "增進自我覺察", "增加物質財富"],
+                    answer: 3
+                }
+            },
+            {
+                text: "原來小寬大的外公每個月會到法鼓山繳交功德款",
+                question: {
+                    type: "choice",
+                    text: "法鼓山募來的款項主要用在?",
+                    options: ["轉贈他人", "炒股票", "教育、弘法、關懷", "吃喝玩樂"],
+                    answer: 2
+                }
+            },
+            {
+                text: "小寬大發現自己的外公是勸募會員，詢問法師勸募會員要做什麼?法師告訴小寬大法鼓山的會員，也就是推廣佛法、淨化人間的鼓手。",
+                question: {
+                    type:  "input",
+                    text: "法鼓山的勸募會員，一定要具備\"三心\"：信心、熱心和＿＿。",
+                    answer: "恆心"
+                }
+            },
+            {
+                text: "小寬大發現原來那一疊寫著自己名字的紙是功德款收據。",
+                question: {
+                    type: "choice",
+                    text: "功德款的收據開立方式是?",
+                    options: ["每季開立", "每次開立、年底開立", "從不開收據", "電子發票"],
+                    answer: 1
+                }
+            },
+            {
+                text: "小寬大想繼續繳交功德款，但想將收據抬頭改成媽媽的姓名",
+                question: {
+                    type: "choice",
+                    text: "誰\"不\"可以是功德款的收據抬頭?",
+                    options: ["護持會員本人", "護持會員的舅舅", "護持會員的同修", "護持會員的父母或小孩"],
+                    answer: 1
+                }
+            },
+            {
+                text: "",
+                question: {
+                    type: "choice",
+                    text: "功德款收據抬頭為公司，需要哪些資訊??",
+                    options: ["勸募會員姓名", "負責人姓名與電話", "公司名稱、統一編號", "會計的姓名"],
+                    answer: 2
+                }
+            },
+            {
+                 text: "",
+                question: {
+                    type: "choice",
+                    text: "勸募會員到知客繳功德款後當下\"不會馬上收到收據\"，會收到哪份文件作為繳款證明??",
+                    options: ["勸募繳款明細表", "發票", "題目寫錯，是收據", "暫收單"],
+                    answer: 3
+                }
+            },
+            {
+                 text: "",
+                question: {
+                    type: "choice",
+                    text: "收據抬頭或金額有錯該怎麼辦?",
+                    options: ["用立可白劃掉修改", "用筆劃掉修改", "立即跟知客/財會處捐款組反映", "用貼紙貼上修改"],
+                    answer: 2
+                }
+            }
+        ];
+        
+        let currentStoryIndex = 0;
+        
+        function renderStory(index) {
+            const story = storyData[index];
+            let html = `
+                <div class="story-container">
+                    <p>${story.text}</p>
+                </div>
+            `;
+            
+            if (story.question) {
+                html += `
+                    <div class="question-container">
+                        <h3>${story.question.text}</h3>
+                        ${renderQuestion(story.question)}
+                    </div>
+                `;
+            }
+            
+            gameContainer.innerHTML = html;
+            updateProgress();
+        }
+        
+        function renderQuestion(question) {
+            if (question.type === "choice") {
+                return question.options.map((option, index) => `
+                    <button onclick="checkAnswer(${index})">${option}</button>
+                `).join('');
+            } else if (question.type === "input") {
+                return `
+                    <input type="text" id="answer-input">
+                    <button onclick="checkAnswer()">提交答案</button>
+                `;
+            }
+        }
+        
+        function checkAnswer(selectedIndex) {
+            const currentQuestion = storyData[currentStoryIndex].question;
+            let isCorrect = false;
+
+            if (currentQuestion.type === "choice") {
+                isCorrect = selectedIndex === currentQuestion.answer;
+            } else if (currentQuestion.type === "input") {
+                const userAnswer = document.getElementById("answer-input").value;
+                isCorrect = userAnswer === currentQuestion.answer;
+            }
+
+            if (isCorrect) {
+                currentStoryIndex++;
+                if (currentStoryIndex < storyData.length) {
+                    alert("回答正確！讓我們繼續冒險吧！");
+                    renderStory(currentStoryIndex);
+                } else {
+                    updateProgress(); // 更新最後的進度
+                    gameContainer.innerHTML = "<h2>恭喜你完成了整個冒險！你已經深入了解了法鼓山的理念和勸募的意義。</h2>";
+                }
+            } else {
+                alert("這個答案不太對哦，再想想看！");
+            }
+        }
+        
+        function updateProgress() {
+            const progress = Math.round((currentStoryIndex / storyData.length) * 100);
+            progressBar.style.width = `${progress}%`;
+            progressBar.textContent = `${progress}%`;
+        }
+        
+        // 開始遊戲
+        renderStory(currentStoryIndex);
+    </script>
+</body>
+</html>
